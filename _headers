@@ -1,0 +1,6 @@
+# Cloudflare Workers 정적 파일에 붙는 응답 헤더. Worker 를 거치는 영상·음악은 worker.js 에서 따로 붙인다.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'

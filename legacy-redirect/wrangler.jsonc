@@ -1,0 +1,6 @@
+{
+  // 예전 Worker 주소를 새 주소로 넘긴다. 배포: cd legacy-redirect && npx wrangler deploy
+  "name": "seungjun-quest",
+  "compatibility_date": "2026-10-12",
+  "main": "index.js"
+}

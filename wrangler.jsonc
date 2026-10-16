@@ -1,0 +1,6 @@
+{
+  // 배포: ./build.sh && npx wrangler pages deploy
+  "name": "seungjun-quest",
+  "compatibility_date": "2026-10-12",
+  "pages_build_output_dir": "dist"
+}

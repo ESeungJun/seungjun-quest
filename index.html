@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEUNGJUN QUEST — Android 개발자 이승준</title>
+    <meta
+      name="description"
+      content="AI 에이전트로 Android 개발 프로세스를 재설계하는 10년차 엔지니어 이승준의 포트폴리오"
+    />
+    <meta property="og:title" content="SEUNGJUN QUEST — Android 개발자 이승준" />
+    <meta property="og:description" content="안드로이드 개발자 10년의 모험" />
+    <meta property="og:url" content="https://seungjun-quest.pages.dev/" />
+    <meta property="og:image" content="https://seungjun-quest.pages.dev/assets/poster.jpg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- 부팅 화면 -->
+    <div class="boot" id="boot" aria-hidden="true">
+      <div class="boot-inner">
+        <div class="boot-title">NOW LOADING</div>
+        <div class="boot-bar"><span></span></div>
+      </div>
+    </div>
+
+    <!-- 상단 HUD -->
+    <header class="hud">
+      <a class="hud-cell" href="#top">
+        <span class="hud-label">SEUNGJUN</span>
+        <span class="hud-value" id="score">000000</span>
+      </a>
+      <div class="hud-cell hud-coins"><span class="coin-icon" data-sprite="COIN" data-px="3"></span>× <span id="coins">00</span></div>
+      <div class="hud-cell">
+        <span class="hud-label">WORLD</span>
+        <span class="hud-value" id="world">TITLE</span>
+      </div>
+      <nav class="hud-nav" aria-label="섹션">
+        <a href="#status">STATUS</a>
+        <a href="#map">MAP</a>
+        <a href="#impact">IMPACT</a>
+        <a href="#quests">QUEST</a>
+        <a href="#inventory">ITEM</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+      <button class="hud-play" type="button" data-open-game>▶ PLAY</button>
+      <button class="hud-sound" id="sound" type="button" aria-pressed="false">♪ OFF</button>
+    </header>
+
+    <main>
+      <!-- 타이틀 -->
+      <section class="title" id="top" data-world="TITLE">
+        <div class="sky">
+          <div class="stars" id="stars"><i class="star-layer a"></i><i class="star-layer b"></i></div>
+          <div class="mountains far" data-parallax="0.15"></div>
+          <div class="mountains near" data-parallax="0.3"></div>
+        </div>
+        <div class="title-inner">
+          <h1 class="logo">
+            <span>SEUNGJUN</span>
+            <span>QUEST</span>
+          </h1>
+          <p class="tagline">- 안드로이드 개발자 10년의 모험 -</p>
+
+          <div class="tv">
+            <div class="tv-screen">
+              <video
+                id="intro-video"
+                src="assets/pixel-quest.mp4"
+                poster="assets/poster.jpg"
+                preload="metadata"
+                playsinline
+              ></video>
+              <button class="tv-play" id="play" type="button"><span>▶ PLAY</span></button>
+            </div>
+            <div class="tv-label">SEUNGJUN QUEST · 소개 영상 · 1:07</div>
+          </div>
+
+          <button class="pixel-btn play-btn" type="button" data-open-game>🎮 직접 플레이하기</button>
+
+          <a class="scroll-hint" href="#status">▼ 모험 기록 보기</a>
+        </div>
+        <div class="ground"></div>
+        <div class="hero-sprite title-hero" data-sprite="HERO_A" data-px="6"></div>
+      </section>
+
+      <!-- 상태창 -->
+      <section class="section" id="status" data-world="1-0">
+        <h2 class="section-title"><span class="section-index">STAGE 01</span>STATUS</h2>
+        <div class="status-grid">
+          <div class="window status-window reveal">
+            <div class="window-head">▶ CHARACTER</div>
+            <div class="char">
+              <div class="char-portrait" data-sprite="HERO_A" data-px="8"></div>
+              <dl class="stat-list">
+                <div><dt>NAME</dt><dd>이승준</dd></div>
+                <div><dt>CLASS</dt><dd class="c-green">Android Engineer</dd></div>
+                <div><dt>LV</dt><dd>10 <small>(2016 → NOW)</small></dd></div>
+                <div><dt>GUILD</dt><dd>번개장터</dd></div>
+                <div><dt>ULT</dt><dd class="c-purple">Claude Code 멀티에이전트</dd></div>
+              </dl>
+            </div>
+            <p class="char-bio">
+              <b class="c-yellow">AI 에이전트로 Android 개발 프로세스를 재설계하는 10년차 엔지니어.</b><br />
+              MVP → MVVM → Clean Architecture 멀티모듈로 이어지는 아키텍처 전환에 참여했고, Media3 기반 숏폼
+              플레이어를 직접 구축했습니다. 지금은 Claude Code 기반 AI 개발 시스템(AIRU)을 설계해 팀 표준
+              프로세스로 정착시키며, <b>AI와 협업하는 개발 프로세스 자체를 만드는 일</b>에 집중하고 있습니다.
+            </p>
+          </div>
+
+          <div class="window reveal">
+            <div class="window-head">▶ STATS</div>
+            <ul class="bars">
+              <li><span>KOTLIN</span><div class="bar"><i data-v="95%"></i></div></li>
+              <li><span>COMPOSE</span><div class="bar"><i data-v="90%"></i></div></li>
+              <li><span>ARCHITECTURE</span><div class="bar"><i data-v="90%"></i></div></li>
+              <li><span>MEDIA3</span><div class="bar"><i data-v="85%"></i></div></li>
+              <li><span>AI AGENTS</span><div class="bar ai"><i data-v="96%"></i></div></li>
+              <li><span>AUTOMATION</span><div class="bar ai"><i data-v="88%"></i></div></li>
+            </ul>
+            <p class="note">* 게이지는 포트폴리오 내 비중을 나타낸 연출입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 월드맵: 경력 -->
+      <section class="section" id="map" data-world="1-1">
+        <h2 class="section-title"><span class="section-index">STAGE 02</span>WORLD MAP</h2>
+        <div class="map" id="map-track">
+          <div class="map-path"></div>
+          <div class="map-hero" id="map-hero"><span class="f-a" data-sprite="HERO_A" data-px="5"></span><span class="f-b" data-sprite="HERO_B" data-px="5"></span></div>
+
+          <article class="node" data-world="1-1">
+            <div class="node-flag">1-1</div>
+            <div class="window node-card">
+              <div class="node-period">2016.03 – 2019.06</div>
+              <h3>휴빌론</h3>
+              <p>KT 계열 앱 9종 개발·운영</p>
+              <div class="loot">LOOT · <span data-sprite="COIN" data-px="3"></span> KT APP ×9</div>
+            </div>
+          </article>
+
+          <article class="node" data-world="1-2">
+            <div class="node-flag">1-2</div>
+            <div class="window node-card">
+              <div class="node-period">2019.06 – 2020.02</div>
+              <h3>테크랩스</h3>
+              <p>소개팅 앱 아만다 · 너랑나랑 Android 개발</p>
+              <div class="loot">LOOT · <span data-sprite="HEART" data-px="3"></span> MATCH</div>
+            </div>
+          </article>
+
+          <article class="node" data-world="2-1">
+            <div class="node-flag">2-1</div>
+            <div class="window node-card">
+              <div class="node-period">2020.03 – NOW</div>
+              <h3>번개장터</h3>
+              <p>마이샵 · 마이지면 · 검색 · 번개톡 핵심 지면 재설계</p>
+              <div class="boss-line">BOSS · LEGACY MVP <b>CLEARED</b></div>
+              <div class="evolve">
+                <span>MVP</span><i>→</i><span>MVVM</span><i>→</i><span>Clean + 멀티모듈</span><i>→</i><span class="c-green">Compose</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="node" data-world="3-1">
+            <div class="node-flag ai">3-1</div>
+            <div class="window node-card ai">
+              <div class="node-period">AI ERA · NOW</div>
+              <h3>AI 개발 프로세스</h3>
+              <p>Claude Code 멀티에이전트 시스템 AIRU 설계 → 팀 표준 프로세스로 정착</p>
+              <div class="boss-line">BOSS · 반복 업무 <b>AUTOMATED</b></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 성과: ? 블록 -->
+      <section class="section" id="impact" data-world="2-2">
+        <h2 class="section-title"><span class="section-index">STAGE 03</span>IMPACT</h2>
+        <p class="section-sub">? 블록을 눌러 보세요</p>
+        <div class="blocks">
+          <button class="qblock" type="button" data-label="일 시청" data-value="11만" data-note="Media3 숏폼 플레이어">
+            <span class="qblock-face" data-sprite="BLOCK" data-px="7"></span>
+          </button>
+          <button class="qblock" type="button" data-label="결제 전환율" data-value="×2" data-note="숏폼 플레이어">
+            <span class="qblock-face" data-sprite="BLOCK" data-px="7"></span>
+          </button>
+          <button class="qblock" type="button" data-label="UP하기 매출" data-value="+35%" data-note="핵심 지면 개편">
+            <span class="qblock-face" data-sprite="BLOCK" data-px="7"></span>
+          </button>
+          <button class="qblock" type="button" data-label="광고 대기" data-value="0초" data-note="광고 SDK 구조 개편">
+            <span class="qblock-face" data-sprite="BLOCK" data-px="7"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 퀘스트 로그: 프로젝트 -->
+      <section class="section" id="quests" data-world="3-1">
+        <h2 class="section-title"><span class="section-index">STAGE 04</span>QUEST LOG</h2>
+        <div class="window journal">
+          <div class="journal-top">
+            <div class="window-head">▶ QUEST JOURNAL</div>
+            <div class="journal-count" id="journal-count"></div>
+          </div>
+          <div class="tabs" role="tablist" id="tabs" aria-label="퀘스트 분류">
+            <button type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="quest-list" data-filter="all">ALL</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="quest-list" data-filter="AI 활용 작업">AI</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="quest-list" data-filter="신규 기능 개발">신규 기능</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="quest-list" data-filter="핵심 지면 작업">핵심 지면</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="quest-list" data-filter="아키텍처">아키텍처</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="quest-list" data-filter="협업·프로세스">협업</button>
+          </div>
+          <div class="journal-body">
+            <ol class="quest-list" id="quest-list" aria-label="퀘스트 목록"></ol>
+            <article class="quest-detail" id="quest-detail" tabindex="-1" aria-label="퀘스트 상세"></article>
+            <p class="sr-only" id="quest-status" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 인벤토리: 기술 스택 -->
+      <section class="section" id="inventory" data-world="3-1">
+        <h2 class="section-title"><span class="section-index">STAGE 05</span>INVENTORY</h2>
+        <div class="window inventory reveal">
+          <div class="window-head">▶ EQUIPMENT</div>
+          <ul class="slots" id="slots"></ul>
+          <div class="slot-desc" id="slot-desc">아이템 위에 마우스를 올려 보세요.</div>
+        </div>
+      </section>
+
+      <!-- 연락처 -->
+      <section class="section contact" id="contact" data-world="END">
+        <div class="continue">
+          <div class="continue-title">CONTINUE?</div>
+          <div class="continue-count" id="countdown">9</div>
+          <p class="continue-sub">다음 스테이지를 함께 깰 파티를 찾고 있다면</p>
+          <div class="contact-buttons">
+            <a class="pixel-btn" href="mailto:6951004@gmail.com">✉ 6951004@gmail.com</a>
+            <a class="pixel-btn alt" href="https://github.com/ESeungJun" target="_blank" rel="noopener noreferrer">★ github.com/ESeungJun</a>
+          </div>
+          <div class="party" id="party"></div>
+        </div>
+        <div class="ground"></div>
+      </section>
+    </main>
+
+    <!-- 직접 플레이 -->
+    <div class="game" id="game" role="dialog" aria-modal="true" aria-label="SEUNGJUN QUEST 게임" hidden>
+      <div class="game-bar">
+        <span>SEUNGJUN QUEST</span>
+        <span class="game-help">← → 이동 · Z 점프 · X 공격 · P 일시정지</span>
+        <span class="game-rotate">↻ 가로로 돌리면 크게 보여요</span>
+        <button type="button" id="game-mute" aria-pressed="true" aria-label="게임 소리">♪ ON</button>
+        <button type="button" id="game-close">✕ 닫기</button>
+      </div>
+      <canvas id="game-canvas" tabindex="0"></canvas>
+      <div class="touch" aria-hidden="true">
+        <div class="touch-pad">
+          <button type="button" data-key="left" tabindex="-1">◀</button>
+          <button type="button" data-key="right" tabindex="-1">▶</button>
+        </div>
+        <div class="touch-pad">
+          <button type="button" data-key="attack" class="t-b" tabindex="-1">B<small>공격</small></button>
+          <button type="button" data-key="jump" class="t-a" tabindex="-1">A<small>점프</small></button>
+        </div>
+      </div>
+      <audio id="game-bgm" src="assets/quest-bgm.m4a" loop preload="none"></audio>
+    </div>
+
+    <div class="crt" aria-hidden="true"></div>
+    <div class="fx-layer" id="fx" aria-hidden="true"></div>
+
+    <script src="sprites.js"></script>
+    <script src="main.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

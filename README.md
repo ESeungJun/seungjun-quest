@@ -17,7 +17,7 @@
 
 ### 직접 플레이하는 게임
 
-경력을 스테이지로 옮긴 횡스크롤 게임. 방향키로 이동, Z 점프, X 공격.
+경력을 스테이지로 옮긴 횡스크롤 게임. 방향키(또는 A·D)로 이동, Z(또는 ↑·W·스페이스) 점프, X(또는 J) 공격, P 일시정지, M 소리, Esc 닫기. 모바일은 가상 패드.
 
 ![게임 플레이 영상](docs/media/gameplay.gif)
 
@@ -55,8 +55,14 @@ python3 -m http.server 4173
 | `worker.js` | 영상·음악 Range 응답(206). 배포 때 `_worker.js` 로 올라간다 |
 | `build.sh` | 배포용 `dist/` 폴더 만들기 |
 | `_headers` | 정적 파일 보안 헤더 (CSP 등) |
+| `docs/` | 기획서·설계서·구현도·결정기록(md, `docs/html/` 은 html 판). 배포에는 포함되지 않음 |
 | `docs/media/` | README 용 스크린샷·영상 (배포에는 포함되지 않음) |
 | `assets/pixel-quest.mp4` | 메인 소개 영상 (Remotion 프로젝트 `android-portfolio-video` 의 `PixelQuest`) |
+| `assets/poster.jpg` | 소개 영상 포스터, 링크 미리보기(OG) 이미지 |
+| `assets/quest-bgm.m4a` | 게임 BGM |
+| `assets/fonts/` | Galmuri11 보통·굵게 (woff2) |
+| `wrangler.jsonc` | Cloudflare Pages 프로젝트 이름과 출력 폴더(`dist`) |
+| `legacy-redirect/` | 예전 Workers 주소를 새 주소로 넘기는 별도 Worker |
 
 ## 내용 고치기
 
@@ -77,7 +83,7 @@ python3 -m http.server 4173
 - `worker.js` 는 `dist/_worker.js` 로 복사되고, `_routes.json` 에 적힌 영상·음악(`/assets/*.mp4`, `*.m4a`) 요청만 받아 Range 응답(206)을 만든다. 파일 전체를 메모리에 올리지 않고 스트림에서 요청한 구간만 잘라 보낸다. 정적 파일 응답은 Range 를 처리하지 않아 iOS Safari 에서 영상이 재생되지 않을 수 있기 때문이다.
 - 보안 헤더는 루트의 `_headers` 에 있다 (`nosniff`, `Referrer-Policy`, `Permissions-Policy`, CSP). Cloudflare 가 정적 파일 응답에 붙인다. `worker.js` 를 거치는 영상·음악 응답에는 적용되지 않아 `worker.js` 가 `nosniff`·`Referrer-Policy` 를 직접 붙인다.
 - CSP 가 `script-src 'self'`, `style-src 'self'` 이므로 HTML 에 인라인 `<script>`·`style` 속성을 쓰지 않는다. 동적인 스타일 값은 JS 에서 `element.style` 로 넣는다 (예: STATS 게이지의 `data-v`).
-- 예전 주소(`seungjun-quest.eojeboda-weather.workers.dev`)는 `legacy-redirect/` 의 Worker 가 같은 경로의 새 주소로 301 이동시킨다. 배포: `cd legacy-redirect && npx wrangler deploy`
+- 예전 Workers 주소(`*.workers.dev`)는 `legacy-redirect/` 의 Worker 가 같은 경로의 새 주소로 301 이동시킨다. 배포: `cd legacy-redirect && npx wrangler deploy`
 
 ## 사용한 리소스
 

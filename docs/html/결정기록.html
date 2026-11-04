@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결정기록 · SEUNGJUN QUEST · seungjun-quest</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{--bg:#fbfaf8;--panel:#fff;--text:#1f2328;--muted:#656d76;--line:#e6e3de;--accent:#3b5bdb;--accent-soft:#edf2ff;--code:#f4f2ee;--th:#f4f2ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--panel:#1c1f23;--text:#e6e6e3;--muted:#9aa1a9;--line:#2e3238;--accent:#91a7ff;--accent-soft:#232a45;--code:#23262b;--th:#23262b}}
+:root[data-theme="dark"]{--bg:#15171a;--panel:#1c1f23;--text:#e6e6e3;--muted:#9aa1a9;--line:#2e3238;--accent:#91a7ff;--accent-soft:#232a45;--code:#23262b;--th:#23262b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr) 220px;gap:40px;max-width:1280px;margin:0 auto;padding:32px 24px}
+nav.docs,aside.toc{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:14px}
+nav.docs .project{font-weight:700;font-size:15px;margin-bottom:12px}
+nav.docs a,aside.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:8px}
+nav.docs a:hover,aside.toc a:hover{color:var(--text);background:var(--accent-soft)}
+nav.docs a.on{color:var(--accent);background:var(--accent-soft);font-weight:600}
+aside.toc .label{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.04em;margin:0 10px 6px}
+aside.toc a.d3{padding-left:22px;font-size:13px}
+main{min-width:0}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:8px}
+.meta button{font:inherit;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:3px 12px;cursor:pointer}
+h1{font-size:32px;line-height:1.3;margin:24px 0 16px}
+h2{font-size:23px;margin:48px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:18px;margin:32px 0 8px}
+h1,h2,h3,h4{position:relative;scroll-margin-top:16px}
+.anchor{position:absolute;left:-1em;color:var(--muted);text-decoration:none;opacity:0}
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:.6}
+a{color:var(--accent)}
+code{font:13.5px/1.6 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:2px 6px;border-radius:5px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto}
+pre code{background:none;padding:0}
+pre.mermaid{background:var(--panel);text-align:center}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--th);font-weight:600;white-space:nowrap}
+blockquote{margin:16px 0;padding:8px 16px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;color:var(--text)}
+img{max-width:100%;border-radius:8px}
+hr{border:0;border-top:1px solid var(--line);margin:32px 0}
+li{margin:3px 0}
+@media (max-width:1100px){.layout{grid-template-columns:200px minmax(0,1fr)}aside.toc{display:none}}
+@media (max-width:760px){.layout{display:block;padding:16px}nav.docs{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}nav.docs .project{width:100%;margin:0}h1{font-size:26px}}
+@media print{nav.docs,aside.toc,.meta button{display:none}.layout{display:block}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="docs"><div class="project">seungjun-quest</div><a href="%EA%B8%B0%ED%9A%8D%EC%84%9C.html">기획서</a><a href="%EC%84%A4%EA%B3%84%EC%84%9C.html">설계서</a><a href="%EA%B5%AC%ED%98%84%EB%8F%84.html">구현도</a><a href="%EA%B2%B0%EC%A0%95%EA%B8%B0%EB%A1%9D.html" class="on">결정기록</a></nav>
+<main>
+<div class="meta"><span>마지막 수정 2026-11-05 · 원본 docs/결정기록.md</span><button id="theme" type="button">테마</button></div>
+<h1 id="결정기록-seungjun-quest"><a class="anchor" href="#결정기록-seungjun-quest">#</a>결정기록 · SEUNGJUN QUEST</h1>
+<blockquote>
+<p>이 기록은 2026-11-05에 git 히스토리·개발 글에서 복원했다.
+결정은 모두 이승준이 했다.
+git에는 완성본 커밋 <code>fbb62bf</code>(2026-10-16) 하나만 있다. 만드는 과정의 결정은 개발 글 <code>~/Desktop/claudeProject/dev-post/01-resume-game/post.md</code>(velog 게시 2026-10-15)에서 가져왔다. 글에는 결정한 날짜가 따로 없어서 글 게시일(2026-10-15)로 적었다. 실제 결정은 그 전이다.</p>
+</blockquote>
+<h2 id="2026-10-15-재료는-노션-포트폴리오-하나로-둔다"><a class="anchor" href="#2026-10-15-재료는-노션-포트폴리오-하나로-둔다">#</a>2026-10-15 재료는 노션 포트폴리오 하나로 둔다</h2>
+<ul>
+<li>무엇을 정했나: 영상·사이트·게임에 들어가는 경력·프로젝트 내용을 모두 노션 포트폴리오 원문에서 가져온다. 요약본을 따로 만들어 넘기지 않는다.</li>
+<li>후보: 노션 내용을 다시 요약해 넘기는 안.</li>
+<li>고른 이유: 다시 요약하면 빠지는 내용이 생긴다. 결과물이 영상·사이트·게임으로 여럿이라 같은 원본에서 나와야 숫자가 서로 안 어긋난다.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 요약본 전달.</li>
+<li>결과: 프로젝트 상세는 <code>data/quests-detail.json</code>에 노션 본문 블록 그대로 들어 있다. 글 쓸 때 사이트·게임·상세 데이터의 숫자가 같은 표현인지 다시 대조했다.</li>
+<li>근거: 개발 글 &quot;목표&quot; 절과 목표 표(<code>dev-post/01-resume-game/tables/tables.html</code>)</li>
+</ul>
+<h2 id="2026-10-15-카드-영상에서-직접-플레이하는-게임까지-방향을-바꾼다"><a class="anchor" href="#2026-10-15-카드-영상에서-직접-플레이하는-게임까지-방향을-바꾼다">#</a>2026-10-15 카드 영상에서 직접 플레이하는 게임까지 방향을 바꾼다</h2>
+<ul>
+<li>무엇을 정했나: 최종 결과물을 &quot;직접 플레이하는 픽셀 게임이 들어간 포트폴리오 사이트&quot;로 한다.</li>
+<li>후보와 순서:<ol>
+<li>카드가 넘어가는 40초 소개 영상</li>
+<li>맥북 터미널에 명령어를 치면 이력이 찍히는 영상(52초)</li>
+<li>경력을 스테이지로 바꾼 레트로 픽셀 게임 영상(67초)</li>
+<li>직접 플레이하는 게임</li>
+</ol>
+</li>
+<li>고른 이유:<ul>
+<li>1 → 2: 템플릿으로 찍은 회사 소개 영상 같았다.</li>
+<li>2 → 3: 개발자가 아닌 사람에게는 까만 화면일 수 있다. 기준은 &quot;개발자가 아니어도 재밌나&quot;.</li>
+<li>3 → 4: 게임처럼 생겼으면 직접 해 볼 수 있어야 재밌다. 영상은 보는 사람이 가만히 있어야 한다. 기준은 &quot;직접 해 볼 수 있나&quot;.</li>
+</ul>
+</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 카드 영상, 터미널 영상(사이트에는 넣지 않았다). 픽셀 게임 영상은 사이트 첫 화면 소개 영상(<code>assets/pixel-quest.mp4</code>, 1:07)으로 남았다.</li>
+<li>근거: 개발 글 &quot;아이디어&quot; 절</li>
+</ul>
+<h2 id="2026-10-15-quest-log를-카드-목록에서-rpg-퀘스트-저널로-바꾼다"><a class="anchor" href="#2026-10-15-quest-log를-카드-목록에서-rpg-퀘스트-저널로-바꾼다">#</a>2026-10-15 QUEST LOG를 카드 목록에서 RPG 퀘스트 저널로 바꾼다</h2>
+<ul>
+<li>무엇을 정했나: 프로젝트 보는 화면을 왼쪽 목록·오른쪽 상세로 나뉜 퀘스트 저널로 바꾸고, 상세에 노션 본문을 &quot;의뢰 내용 → 보상 → 퀘스트 기록&quot; 순서로 넣는다. 픽셀 폰트는 제목에만 쓴다.</li>
+<li>후보: 한 줄 요약만 있는 카드 목록(처음 만든 형태).</li>
+<li>고른 이유: 카드 목록은 게임 컨셉과 안 맞았고, 긴 설명을 픽셀 폰트로 읽기 힘들었다. 카드에는 한 줄 요약만 있어서 무엇을 어떻게 풀었는지는 노션에만 있었다.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 카드 목록.</li>
+<li>같이 한 일: 스크롤할 때 끊김을 재 보니 레이아웃 계산이 1,087번 일어났고, 216번으로 줄였다(개발 글 수치). 지금 코드는 월드맵 위치를 미리 재 두고 rAF에서 쓰기만 한다(<code>main.js</code> 주석).</li>
+<li>근거: 개발 글 &quot;검증 2&quot;</li>
+</ul>
+<h2 id="2026-10-15-폰에서-직접-해-보고-점프와-대사창을-고친다"><a class="anchor" href="#2026-10-15-폰에서-직접-해-보고-점프와-대사창을-고친다">#</a>2026-10-15 폰에서 직접 해 보고 점프와 대사창을 고친다</h2>
+<ul>
+<li>무엇을 정했나: 자동 입력으로 엔딩까지 가는 것만 확인하지 않고, 배포한 뒤 실제 폰으로 해 본다. 그 결과 점프 최고 높이를 43px(타일 2.7칸)에서 73px(4.6칸)로 올리고, 표지판 대사창을 점수판 바로 아래로 옮긴다.</li>
+<li>후보: 자동 테스트만으로 끝내는 안.</li>
+<li>고른 이유: 손맛·터치 반응은 실제 폰에서 해 봐야 보인다. 해 보자마자 땅에서 3칸 위 발판에 점프가 닿지 않았고, 대사창이 캐릭터를 가렸다.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 없음.</li>
+<li>확인: 모든 스테이지 발판·아이템이 닿는지 계산으로 검사하고, 대표 발판 8곳은 게임에서 직접 점프해 착지를 확인했다. 지금 코드의 점프 초속 <code>-7.0</code>, 중력 <code>0.32</code>(<code>game.js</code> <code>updatePlay</code>)이면 약 73px이 나온다.</li>
+<li>근거: 개발 글 &quot;검증 3&quot;</li>
+</ul>
+<h2 id="2026-10-15-영상음악은-worker가-range-응답을-만든다"><a class="anchor" href="#2026-10-15-영상음악은-worker가-range-응답을-만든다">#</a>2026-10-15 영상·음악은 Worker가 Range 응답을 만든다</h2>
+<ul>
+<li>무엇을 정했나: 영상·음악 요청(<code>/assets/*.mp4</code>, <code>/assets/*.m4a</code>)만 작은 Worker(<code>worker.js</code> → <code>dist/_worker.js</code>)가 받아 요청한 구간만 잘라 206으로 보낸다. 나머지는 정적 파일로 바로 나간다.</li>
+<li>후보: 기록 없음.</li>
+<li>고른 이유: PC에서는 나오던 영상이 아이폰에서만 안 나왔다. iOS Safari는 영상을 Range 요청으로 받는데 Cloudflare 정적 파일 응답이 Range를 처리하지 않았다.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 없음.</li>
+<li>세부: 파일 전체를 메모리에 올리지 않고 스트림에서 구간만 잘라 낸다. Worker 응답에는 <code>_headers</code>가 안 붙어 <code>nosniff</code>·<code>Referrer-Policy</code>를 직접 붙인다.</li>
+<li>근거: 개발 글 &quot;아이폰에서만 영상이 안 나왔다&quot;, <code>worker.js</code> 주석, README &quot;배포&quot; 절</li>
+</ul>
+<h2 id="2026-10-16-cloudflare-pages로-옮기고-예전-workers-주소는-301로-넘긴다"><a class="anchor" href="#2026-10-16-cloudflare-pages로-옮기고-예전-workers-주소는-301로-넘긴다">#</a>2026-10-16 Cloudflare Pages로 옮기고 예전 Workers 주소는 301로 넘긴다</h2>
+<ul>
+<li>무엇을 정했나: 사이트를 Cloudflare Pages(<code>seungjun-quest.pages.dev</code>)에 <code>./build.sh &amp;&amp; npx wrangler pages deploy</code>로 올린다. 예전 Workers 주소로 들어온 요청은 <code>legacy-redirect/</code> Worker가 같은 경로의 새 주소로 301 이동시킨다.</li>
+<li>후보: 기록 없음.</li>
+<li>고른 이유: 기록 없음.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 예전 Workers 주소에서 직접 서비스하던 방식.</li>
+<li>근거: <code>fbb62bf</code>의 <code>wrangler.jsonc</code>, <code>build.sh</code>, <code>legacy-redirect/</code>, README &quot;배포&quot; 절. 이전 주소에서 돌던 시기의 커밋은 git에 없다.</li>
+</ul>
+<h2 id="2026-10-16-csp로-같은-출처-파일만-허용한다"><a class="anchor" href="#2026-10-16-csp로-같은-출처-파일만-허용한다">#</a>2026-10-16 CSP로 같은 출처 파일만 허용한다</h2>
+<ul>
+<li>무엇을 정했나: <code>_headers</code>에 <code>default-src &#39;self&#39;</code>, <code>script-src &#39;self&#39;</code>, <code>style-src &#39;self&#39;</code>, <code>frame-ancestors &#39;none&#39;</code> 등을 건다. 그래서 HTML에 인라인 스크립트·<code>style</code> 속성을 쓰지 않고, 동적 스타일은 JS에서 넣는다.</li>
+<li>후보: 기록 없음.</li>
+<li>고른 이유: 기록 없음. README에는 &quot;정적 파일 보안 헤더&quot;로만 적혀 있다.</li>
+<li>누가 정했나: 이승준</li>
+<li>버린 시도: 없음.</li>
+<li>근거: <code>fbb62bf</code>의 <code>_headers</code>, <code>main.js</code> 204행 주석(&quot;게이지 값은 CSP(style-src &#39;self&#39;) 때문에 style 속성 대신 여기서 넣는다&quot;)</li>
+</ul>
+
+</main>
+<aside class="toc"><div class="label">이 문서</div><a class="d2" href="#2026-10-15-재료는-노션-포트폴리오-하나로-둔다">2026-10-15 재료는 노션 포트폴리오 하나로 둔다</a><a class="d2" href="#2026-10-15-카드-영상에서-직접-플레이하는-게임까지-방향을-바꾼다">2026-10-15 카드 영상에서 직접 플레이하는 게임까지 방향을 바꾼다</a><a class="d2" href="#2026-10-15-quest-log를-카드-목록에서-rpg-퀘스트-저널로-바꾼다">2026-10-15 QUEST LOG를 카드 목록에서 RPG 퀘스트 저널로 바꾼다</a><a class="d2" href="#2026-10-15-폰에서-직접-해-보고-점프와-대사창을-고친다">2026-10-15 폰에서 직접 해 보고 점프와 대사창을 고친다</a><a class="d2" href="#2026-10-15-영상음악은-worker가-range-응답을-만든다">2026-10-15 영상·음악은 Worker가 Range 응답을 만든다</a><a class="d2" href="#2026-10-16-cloudflare-pages로-옮기고-예전-workers-주소는-301로-넘긴다">2026-10-16 Cloudflare Pages로 옮기고 예전 Workers 주소는 301로 넘긴다</a><a class="d2" href="#2026-10-16-csp로-같은-출처-파일만-허용한다">2026-10-16 CSP로 같은 출처 파일만 허용한다</a></aside>
+</div>
+<script>
+(function(){var r=document.documentElement,k='docs-theme';try{var s=localStorage.getItem(k);if(s)r.dataset.theme=s}catch(e){}
+document.getElementById('theme').onclick=function(){var d=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=d==='dark'?'light':'dark';try{localStorage.setItem(k,r.dataset.theme)}catch(e){}location.reload()};})();
+</script>
+
+</body>
+</html>

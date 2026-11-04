@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>설계서 · SEUNGJUN QUEST · seungjun-quest</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{--bg:#fbfaf8;--panel:#fff;--text:#1f2328;--muted:#656d76;--line:#e6e3de;--accent:#3b5bdb;--accent-soft:#edf2ff;--code:#f4f2ee;--th:#f4f2ee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--panel:#1c1f23;--text:#e6e6e3;--muted:#9aa1a9;--line:#2e3238;--accent:#91a7ff;--accent-soft:#232a45;--code:#23262b;--th:#23262b}}
+:root[data-theme="dark"]{--bg:#15171a;--panel:#1c1f23;--text:#e6e6e3;--muted:#9aa1a9;--line:#2e3238;--accent:#91a7ff;--accent-soft:#232a45;--code:#23262b;--th:#23262b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr) 220px;gap:40px;max-width:1280px;margin:0 auto;padding:32px 24px}
+nav.docs,aside.toc{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:14px}
+nav.docs .project{font-weight:700;font-size:15px;margin-bottom:12px}
+nav.docs a,aside.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:8px}
+nav.docs a:hover,aside.toc a:hover{color:var(--text);background:var(--accent-soft)}
+nav.docs a.on{color:var(--accent);background:var(--accent-soft);font-weight:600}
+aside.toc .label{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.04em;margin:0 10px 6px}
+aside.toc a.d3{padding-left:22px;font-size:13px}
+main{min-width:0}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:8px}
+.meta button{font:inherit;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:3px 12px;cursor:pointer}
+h1{font-size:32px;line-height:1.3;margin:24px 0 16px}
+h2{font-size:23px;margin:48px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:18px;margin:32px 0 8px}
+h1,h2,h3,h4{position:relative;scroll-margin-top:16px}
+.anchor{position:absolute;left:-1em;color:var(--muted);text-decoration:none;opacity:0}
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:.6}
+a{color:var(--accent)}
+code{font:13.5px/1.6 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:2px 6px;border-radius:5px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto}
+pre code{background:none;padding:0}
+pre.mermaid{background:var(--panel);text-align:center}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--th);font-weight:600;white-space:nowrap}
+blockquote{margin:16px 0;padding:8px 16px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;color:var(--text)}
+img{max-width:100%;border-radius:8px}
+hr{border:0;border-top:1px solid var(--line);margin:32px 0}
+li{margin:3px 0}
+@media (max-width:1100px){.layout{grid-template-columns:200px minmax(0,1fr)}aside.toc{display:none}}
+@media (max-width:760px){.layout{display:block;padding:16px}nav.docs{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}nav.docs .project{width:100%;margin:0}h1{font-size:26px}}
+@media print{nav.docs,aside.toc,.meta button{display:none}.layout{display:block}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="docs"><div class="project">seungjun-quest</div><a href="%EA%B8%B0%ED%9A%8D%EC%84%9C.html">기획서</a><a href="%EC%84%A4%EA%B3%84%EC%84%9C.html" class="on">설계서</a><a href="%EA%B5%AC%ED%98%84%EB%8F%84.html">구현도</a><a href="%EA%B2%B0%EC%A0%95%EA%B8%B0%EB%A1%9D.html">결정기록</a></nav>
+<main>
+<div class="meta"><span>마지막 수정 2026-11-05 · 원본 docs/설계서.md</span><button id="theme" type="button">테마</button></div>
+<h1 id="설계서-seungjun-quest"><a class="anchor" href="#설계서-seungjun-quest">#</a>설계서 · SEUNGJUN QUEST</h1>
+<blockquote>
+<p>2026-11-05에 코드를 읽고 정리했다. 기능 범위는 <a href="기획서.html">기획서</a>, 파일·흐름은 <a href="구현도.html">구현도</a>에 있다.</p>
+</blockquote>
+<h2 id="기술-스택과-고른-이유"><a class="anchor" href="#기술-스택과-고른-이유">#</a>기술 스택과 고른 이유</h2>
+<table>
+<thead>
+<tr>
+<th>영역</th>
+<th>쓰는 것</th>
+<th>고른 이유</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>화면</td>
+<td>HTML + CSS + 순수 JS, 프레임워크·빌드 도구 없음</td>
+<td>섹션 7개짜리 한 페이지라 필요 없다(이유는 추정, 기록 없음). README에 &quot;빌드 도구 없는 정적 사이트&quot;라고 적혀 있다</td>
+</tr>
+<tr>
+<td>게임</td>
+<td>Canvas 2D, 320×192 저해상도에 그리고 정수 배율로 키움, 로직 고정 60Hz</td>
+<td>픽셀이 뭉개지지 않고 기기마다 같은 물리가 나온다(<code>game.js</code> 첫 줄 주석)</td>
+</tr>
+<tr>
+<td>스프라이트</td>
+<td><code>sprites.js</code>에 문자 격자로 정의(문자 하나 = 픽셀 하나)</td>
+<td>소개 영상과 같은 캐릭터를 쓴다</td>
+</tr>
+<tr>
+<td>폰트</td>
+<td>Galmuri11(woff2, 저장소에 포함)</td>
+<td>픽셀 폰트. CSP가 <code>&#39;self&#39;</code>만 허용해 외부 폰트를 쓰지 않는다</td>
+</tr>
+<tr>
+<td>소리</td>
+<td>Web Audio로 효과음 합성, BGM은 m4a 한 개</td>
+<td>효과음 파일 없이 코드로 만든다</td>
+</tr>
+<tr>
+<td>데이터</td>
+<td><code>main.js</code> 안의 <code>QUESTS</code>·<code>ITEMS</code>, 프로젝트 본문은 <code>data/quests-detail.json</code></td>
+<td>재료는 노션 하나로 두기로 했다(<a href="결정기록.html#2026-10-15-재료는-노션-포트폴리오-하나로-둔다">결정기록</a>)</td>
+</tr>
+<tr>
+<td>호스팅</td>
+<td>Cloudflare Pages + <code>_worker.js</code>(영상·음악만)</td>
+<td>정적 파일 응답이 Range를 처리하지 않아 iOS Safari에서 영상이 안 나왔다</td>
+</tr>
+</tbody></table>
+<h3 id="결과물-형태-후보-개발-글-기준"><a class="anchor" href="#결과물-형태-후보-개발-글-기준">#</a>결과물 형태 후보 (개발 글 기준)</h3>
+<table>
+<thead>
+<tr>
+<th>후보</th>
+<th>버린·고른 이유</th>
+<th>결과</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>카드가 넘어가는 40초 영상</td>
+<td>템플릿으로 찍은 회사 소개 영상 같았다</td>
+<td>버림</td>
+</tr>
+<tr>
+<td>맥북 터미널 영상(52초)</td>
+<td>개발자가 아니면 까만 화면일 뿐일 수 있다</td>
+<td>영상은 만들었지만 사이트에는 넣지 않음</td>
+</tr>
+<tr>
+<td>픽셀 게임 영상(67초)</td>
+<td>게임처럼 생겼으면 직접 해 볼 수 있어야 재밌다</td>
+<td>사이트 소개 영상으로 씀</td>
+</tr>
+<tr>
+<td>직접 플레이하는 게임</td>
+<td>보는 사람이 가만히 있지 않아도 된다</td>
+<td><strong>채택</strong></td>
+</tr>
+</tbody></table>
+<h2 id="전체-아키텍처"><a class="anchor" href="#전체-아키텍처">#</a>전체 아키텍처</h2>
+<pre class="mermaid">flowchart LR
+  V[&quot;방문자 브라우저&quot;] --&gt;|&quot;HTML·CSS·JS·JSON·폰트·이미지&quot;| P[&quot;Cloudflare Pages 정적 파일&lt;br/&gt;_headers 보안 헤더&quot;]
+  V --&gt;|&quot;/assets/*.mp4, *.m4a&lt;br/&gt;Range 요청&quot;| W[&quot;_worker.js&lt;br/&gt;(worker.js)&quot;]
+  W --&gt;|&quot;env.ASSETS.fetch&quot;| P
+  W --&gt;|&quot;206 부분 응답&lt;br/&gt;nosniff·Referrer-Policy&quot;| V
+  O[&quot;예전 workers.dev 주소&quot;] --&gt;|&quot;legacy-redirect Worker&lt;br/&gt;301&quot;| V</pre>
+<pre class="mermaid">flowchart TD
+  subgraph Page[&quot;index.html&quot;]
+    S[&quot;sprites.js&lt;br/&gt;PAL·스프라이트 격자&quot;] --&gt; M[&quot;main.js&lt;br/&gt;섹션 연출·QUEST LOG·효과음&quot;]
+    S --&gt; G[&quot;game.js&lt;br/&gt;게임 창·캔버스&quot;]
+  end
+  M --&gt;|&quot;fetch&quot;| J[&quot;data/quests-detail.json&quot;]
+  M --&gt;|&quot;data-open-game 버튼&quot;| G
+  G --&gt; B[&quot;assets/quest-bgm.m4a&quot;]
+  M --&gt; VID[&quot;assets/pixel-quest.mp4&quot;]</pre>
+<ul>
+<li>스크립트 셋은 <code>&lt;script src&gt;</code>로 순서대로 불러온다. 인라인 스크립트는 없다(CSP).</li>
+<li><code>main.js</code>와 <code>game.js</code>는 각각 즉시 실행 함수 안에 갇혀 있고, 전역으로 나오는 것은 <code>sprites.js</code>의 <code>PAL</code>·스프라이트 정의와 <code>?debug</code>일 때의 <code>window.__quest</code>뿐이다.</li>
+</ul>
+<h2 id="데이터-구조"><a class="anchor" href="#데이터-구조">#</a>데이터 구조</h2>
+<table>
+<thead>
+<tr>
+<th>데이터</th>
+<th>위치</th>
+<th>모양</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>프로젝트 카드</td>
+<td><code>main.js</code> <code>QUESTS</code> (11개)</td>
+<td><code>{ cat, n, title, line(의뢰 내용), result(보상), keys[] }</code>. <code>cat</code>은 5가지 분류이고 <code>RARITY</code>로 등급 색을 붙인다</td>
+</tr>
+<tr>
+<td>프로젝트 상세</td>
+<td><code>data/quests-detail.json</code></td>
+<td><code>{ &quot;1&quot;: { title, sections: [{ heading, blocks: [{ type: &quot;p&quot;/&quot;quote&quot;/&quot;ul&quot;…, text 또는 items }] }] }, … &quot;11&quot;: … }</code></td>
+</tr>
+<tr>
+<td>기술 스택</td>
+<td><code>main.js</code> <code>ITEMS</code></td>
+<td><code>{ icon, name, desc, ai? }</code></td>
+</tr>
+<tr>
+<td>경력·소개</td>
+<td><code>index.html</code> <code>#status</code>, <code>#map</code> 섹션 마크업</td>
+<td></td>
+</tr>
+<tr>
+<td>성과</td>
+<td><code>index.html</code>의 <code>.qblock</code> 요소 <code>data-label</code>·<code>data-value</code>·<code>data-note</code></td>
+<td></td>
+</tr>
+<tr>
+<td>게임 스테이지</td>
+<td><code>game.js</code> <code>LEVELS</code> (5개)</td>
+<td><code>{ id, name, theme, len, pits, plats, items, enemies, signs, flag, clear, boss?, blocks? }</code>. 보스는 2-1·3-1에, ? 블록(<code>blocks</code>)은 2-2에만 있다. 좌표는 16px 타일 단위</td>
+</tr>
+</tbody></table>
+<ul>
+<li>저장소(localStorage 등)를 쓰지 않는다. 점수·코인은 페이지를 닫으면 사라진다.</li>
+<li>상세 JSON을 못 불러오면 카드 요약만 보여 준다.</li>
+</ul>
+<h2 id="외부-의존"><a class="anchor" href="#외부-의존">#</a>외부 의존</h2>
+<ul>
+<li>런타임에 부르는 외부 서비스·CDN이 없다. 모든 파일이 같은 출처에서 나온다.</li>
+<li>배포 도구: <code>wrangler</code>(npx로 실행, 저장소에 package.json 없음).</li>
+<li>소개 영상과 BGM은 저장소 밖 Remotion 프로젝트에서 만들어 넣었다(README).</li>
+</ul>
+<h2 id="플랫폼별-차이"><a class="anchor" href="#플랫폼별-차이">#</a>플랫폼별 차이</h2>
+<table>
+<thead>
+<tr>
+<th>환경</th>
+<th>다른 점</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS Safari</td>
+<td>영상·음악을 Range 요청으로 받는다. Worker가 206을 만들어 줘야 재생된다</td>
+</tr>
+<tr>
+<td>터치 기기(<code>pointer: coarse</code>)</td>
+<td>게임 아래 가상 패드가 나온다. 세로면 캔버스 아래 150px, 가로면 양옆 300px를 패드 자리로 뺀다</td>
+</tr>
+<tr>
+<td>세로 화면</td>
+<td>게임 창에 &quot;가로로 돌리면 크게 보여요&quot; 안내</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>키보드 조작. 코나미 커맨드는 게임 창이 닫혀 있을 때만 받는다</td>
+</tr>
+<tr>
+<td>모션 줄이기 설정</td>
+<td><code>main.js</code>·<code>game.js</code>·<code>styles.css</code>가 <code>prefers-reduced-motion</code>을 보고 연출을 줄인다</td>
+</tr>
+</tbody></table>
+<h2 id="보안권한"><a class="anchor" href="#보안권한">#</a>보안·권한</h2>
+<ul>
+<li><code>_headers</code>(정적 파일):<ul>
+<li><code>Content-Security-Policy: default-src &#39;self&#39;; img-src &#39;self&#39; data:; media-src &#39;self&#39;; style-src &#39;self&#39;; script-src &#39;self&#39;; frame-ancestors &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;none&#39;</code></li>
+<li><code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>, <code>Permissions-Policy: camera=(), microphone=(), geolocation=()</code></li>
+</ul>
+</li>
+<li>CSP 때문에 HTML에 인라인 <code>&lt;script&gt;</code>와 <code>style</code> 속성을 쓰지 않는다. 동적 스타일은 JS에서 <code>element.style</code>로 넣는다(예: STATS 게이지 <code>data-v</code>).</li>
+<li>Worker를 거치는 영상·음악 응답에는 <code>_headers</code>가 붙지 않아 <code>worker.js</code>가 <code>nosniff</code>·<code>Referrer-Policy</code>를 직접 붙인다. GET·HEAD 외에는 405.</li>
+<li>노션 본문은 <code>textContent</code>로만 DOM에 넣는다(<code>main.js</code> 주석). <code>innerHTML</code>은 코드 안 스프라이트 SVG에만 쓴다.</li>
+<li>비밀값·키가 없다. 사이트에 공개하는 연락처는 메일 주소와 GitHub 링크다.</li>
+<li>공개 저장소다. 문서에는 메일 외 개인정보를 넣지 않는다.</li>
+</ul>
+<h2 id="알려진-한계"><a class="anchor" href="#알려진-한계">#</a>알려진 한계</h2>
+<ul>
+<li>Worker는 <code>bytes=시작-끝</code> 범위 하나만 처리한다. 여러 범위 요청은 전체 응답으로 돌려준다.</li>
+<li>파일 크기를 모르면 Worker가 파일을 한 번 끝까지 읽어 센다. ETag별로 기억하지만 Worker 인스턴스가 바뀌면 다시 센다.</li>
+<li>소개 영상이 약 11MB라 느린 회선에서는 늦게 뜬다(<code>preload=&quot;metadata&quot;</code>로 처음엔 앞부분만 받는다).</li>
+<li>새 파일을 추가하면 <code>build.sh</code> 복사 목록에도 넣어야 배포된다. 빠뜨려도 경고가 없다.</li>
+<li>프로젝트 데이터가 <code>main.js</code>·<code>quests-detail.json</code>·<code>index.html</code>·<code>game.js</code> 네 곳에 나뉘어 있어 숫자를 고치면 네 곳을 같이 봐야 한다.</li>
+<li>자동 테스트 코드가 저장소에 없다. <code>?debug</code> 진입점만 있다.</li>
+<li>STATUS 능력치 게이지는 측정값이 아니라 연출이다(화면에도 그렇게 적혀 있다).</li>
+</ul>
+
+</main>
+<aside class="toc"><div class="label">이 문서</div><a class="d2" href="#기술-스택과-고른-이유">기술 스택과 고른 이유</a><a class="d3" href="#결과물-형태-후보-개발-글-기준">결과물 형태 후보 (개발 글 기준)</a><a class="d2" href="#전체-아키텍처">전체 아키텍처</a><a class="d2" href="#데이터-구조">데이터 구조</a><a class="d2" href="#외부-의존">외부 의존</a><a class="d2" href="#플랫폼별-차이">플랫폼별 차이</a><a class="d2" href="#보안권한">보안·권한</a><a class="d2" href="#알려진-한계">알려진 한계</a></aside>
+</div>
+<script>
+(function(){var r=document.documentElement,k='docs-theme';try{var s=localStorage.getItem(k);if(s)r.dataset.theme=s}catch(e){}
+document.getElementById('theme').onclick=function(){var d=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=d==='dark'?'light':'dark';try{localStorage.setItem(k,r.dataset.theme)}catch(e){}location.reload()};})();
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
+const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+mermaid.initialize({startOnLoad:true,theme:dark?'dark':'default',fontFamily:'Pretendard, sans-serif'});
+</script>
+</body>
+</html>

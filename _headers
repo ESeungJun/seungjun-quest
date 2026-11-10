@@ -1,6 +1,16 @@
-# Cloudflare Workers 정적 파일에 붙는 응답 헤더. Worker 를 거치는 영상·음악은 worker.js 에서 따로 붙인다.
+# Cloudflare Pages 정적 파일에 붙는 응답 헤더. Worker 를 거치는 영상·음악은 worker.js 에서 따로 붙인다.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Content-Security-Policy: default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'
+
+# 글꼴·이미지는 파일 이름에 해시가 없어서 immutable 대신 기간만 둔다 (서브셋을 다시 만들면 30일 안에 바뀐다)
+/assets/fonts/*
+  Cache-Control: public, max-age=2592000
+/assets/*.jpg
+  Cache-Control: public, max-age=604800
+/assets/*.png
+  Cache-Control: public, max-age=604800
+/assets/*.svg
+  Cache-Control: public, max-age=604800

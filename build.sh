@@ -4,7 +4,8 @@ set -e
 cd "$(dirname "$0")"
 rm -rf dist
 mkdir dist
-cp -R index.html styles.css main.js sprites.js game.js _headers data assets dist/
+cp -R index.html resume.html 404.html styles.css resume.css boot.js sprites.js lib.js main.js game.js \
+  robots.txt sitemap.xml _headers data assets dist/
 # 영상·음악 Range 응답은 _worker.js 가 맡고, 나머지는 정적 파일로 바로 나간다
 cp worker.js dist/_worker.js
 cat > dist/_routes.json <<'JSON'

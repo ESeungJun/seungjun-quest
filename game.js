@@ -10,6 +10,7 @@
   const FONT_L = "bold 22px Galmuri11";
   // 모션 줄이기: 화면 흔들림과 깜빡임을 끈다
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const L = window.QuestLib;
 
   // ───────── 스테이지 정의 ─────────
   const THEMES = {
@@ -59,6 +60,7 @@
       boss: { type: "legacy", arena: 78 },
       flag: 96,
       clear: ["번개장터 · 2020.03 – NOW", "핵심 지면 재설계 (마이샵·검색·번개톡)", "MVP→MVVM→Clean+멀티모듈→Compose", "Bitbucket → Jenkins CI/CD 이관"],
+      quest: 7,
     },
     {
       id: "2-2",
@@ -78,6 +80,7 @@
       signs: [[4, "WORLD 2-2 성과\n? 블록을 아래에서 쳐라!"]],
       flag: 64,
       clear: ["숫자로 남은 성과", "일 시청 11만 · 결제 전환율 ×2", "UP하기 매출 +35% · 광고 대기 0초"],
+      quest: 6,
     },
     {
       id: "3-1",
@@ -97,6 +100,7 @@
       boss: { type: "repeat", arena: 78 },
       flag: 96,
       clear: ["AI 시대", "Claude Code 멀티에이전트 AIRU → 팀 표준", "n8n 개발 자동화 8종 · AI 스터디 리드"],
+      quest: 1,
     },
   ];
 
@@ -140,7 +144,8 @@
 
   // ───────── 소리 ─────────
   let actx = null;
-  let muted = false;
+  // 페이지의 소리 버튼과 같은 상태를 쓴다 (기본 꺼짐)
+  let muted = !(window.QuestSound && window.QuestSound.on);
   const tone = (freqs, dur = 0.06, type = "square", vol = 0.05) => {
     if (muted || !actx) return;
     const t0 = actx.currentTime;
@@ -178,7 +183,7 @@
 
   // ───────── 입력 ─────────
   const keys = { left: false, right: false, jump: false, attack: false };
-  const pressed = { jump: false, attack: false, confirm: false };
+  const pressed = { jump: false, attack: false, confirm: false, left: false, right: false };
   const KEYMAP = {
     ArrowLeft: "left", a: "left", A: "left",
     ArrowRight: "right", d: "right", D: "right",
@@ -186,7 +191,7 @@
     x: "attack", X: "attack", j: "attack", J: "attack",
   };
   const setKey = (k, down) => {
-    if (down && !keys[k] && (k === "jump" || k === "attack")) pressed[k] = true;
+    if (down && !keys[k]) pressed[k] = true;
     keys[k] = down;
   };
   const clearInput = () => {
@@ -196,7 +201,7 @@
   const onKey = (e) => {
     if (root.hidden) return;
     // Tab 으로 상단 버튼에 와 있으면 Enter·스페이스는 그 버튼이 받는다
-    if ((e.key === "Enter" || e.key === " ") && e.target.closest?.(".game-bar button")) return;
+    if ((e.key === "Enter" || e.key === " ") && e.target.closest?.(".game-bar button, .game-links a")) return;
     const down = e.type === "keydown";
     const k = KEYMAP[e.key];
     const isGameKey = k || e.key === "Enter" || e.key === "Escape" || "mMpP".includes(e.key) && e.key.length === 1;
@@ -243,6 +248,19 @@
     coins: 0,
     skills: 0,
     t: 0,
+    pick: 0, // 타이틀에서 고른 스테이지
+  };
+
+  // ───────── 진행 기록 (깬 스테이지 · 최고 점수) ─────────
+  const SAVE_KEY = "sq.game";
+  let progress = L.readProgress(null, LEVELS.length);
+  try {
+    progress = L.readProgress(localStorage.getItem(SAVE_KEY), LEVELS.length);
+  } catch {}
+  const saveProgress = () => {
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(progress));
+    } catch {}
   };
   let lv = null; // 현재 스테이지 런타임
 
@@ -371,13 +389,19 @@
     player.inv = 60;
   };
 
-  const startLevel = (i) => {
+  // fresh: 타이틀에서 골라 시작하는 경우. 앞 스테이지에서 얻었을 능력을 맞춰 준다.
+  const startLevel = (i, fresh = false) => {
     state.levelIndex = i;
     lv = buildLevel(LEVELS[i]);
+    lv.frames = 0;
     player.hp = 3;
     player.atk = 0;
     if (i < 2) player.speed = 1.6;
     if (i < 2) player.sword = 0;
+    if (fresh && i > 2) {
+      player.speed = 2.4;
+      player.sword = 3;
+    }
     resetPlayer(2 * T);
     state.paused = false;
     clearInput();
@@ -701,6 +725,8 @@
       state.scene = "clear";
       lv.clearT = 0;
       state.score += 1000;
+      progress = L.nextProgress(progress, state.levelIndex, state.score, LEVELS.length);
+      saveProgress();
       SFX.clear();
     }
 
@@ -737,12 +763,18 @@
   const update = () => {
     state.t++;
     if (state.scene === "title") {
+      // 깬 스테이지까지는 좌우로 골라서 시작할 수 있다
+      const step = (pressed.right ? 1 : 0) - (pressed.left ? 1 : 0);
+      if (step && progress.unlocked > 0) {
+        state.pick = Math.min(progress.unlocked, Math.max(0, state.pick + step));
+        SFX.select();
+      }
       if (pressed.confirm || pressed.jump) {
         SFX.select();
         state.score = 0;
         state.coins = 0;
         state.skills = 0;
-        startLevel(0);
+        startLevel(state.pick, true);
       }
     } else if (state.scene === "play") {
       if (state.paused && (pressed.confirm || pressed.jump)) {
@@ -750,6 +782,7 @@
         pressed.jump = false;
       }
       if (!state.paused) {
+        lv.frames++;
         updatePlay();
         updateFx();
       }
@@ -769,9 +802,25 @@
         state.scene = "title";
       }
     }
-    pressed.jump = false;
-    pressed.attack = false;
-    pressed.confirm = false;
+    Object.keys(pressed).forEach((k) => (pressed[k] = false));
+    syncLinks();
+  };
+
+  // 캔버스 글자는 누를 수 없으므로, 클리어·엔딩 화면에서는 DOM 링크를 캔버스 위에 띄운다
+  const linksEl = document.getElementById("game-links");
+  const questLink = document.getElementById("game-quest-link");
+  const endLinks = ["game-mail", "game-github", "game-resume"].map((id) => document.getElementById(id));
+  let linksKey = "";
+  const syncLinks = () => {
+    const quest = state.scene === "clear" && lv.clearT > 40 ? lv.def.quest : null;
+    const ending = state.scene === "ending" && (state.endT || 0) > 60;
+    const key = quest ? `q${quest}` : ending ? "end" : "";
+    if (key === linksKey) return;
+    linksKey = key;
+    linksEl.hidden = !key;
+    questLink.hidden = !quest;
+    if (quest) questLink.href = L.questHash(quest);
+    endLinks.forEach((a) => (a.hidden = !ending));
   };
 
   // ───────── 그리기 ─────────
@@ -1005,24 +1054,31 @@
   };
 
   const drawTitle = () => {
-    ctx.fillStyle = "#2A1B4D";
+    // 밤하늘 (THEMES.night 의 위쪽 두 단)
+    ctx.fillStyle = "#0B0B24";
     ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = "#3B2A6B";
+    ctx.fillStyle = "#17153B";
     ctx.fillRect(0, H / 2, W, H / 2);
     ctx.fillStyle = "#FFFFFF";
-    for (let i = 0; i < 40; i++) if ((Math.floor(state.t / 20) + i) % 5) ctx.fillRect((i * 83) % W, (i * 41) % 90, 1, 1);
+    for (let i = 0; i < 40; i++) if (reduceMotion || (Math.floor(state.t / 20) + i) % 5) ctx.fillRect((i * 83) % W, (i * 41) % 90, 1, 1);
     ctx.fillStyle = "#8F563B";
     ctx.fillRect(0, H - 24, W, 24);
     ctx.fillStyle = "#3DDC84";
     ctx.fillRect(0, H - 24, W, 3);
     ctx.textBaseline = "top";
-    text("SEUNGJUN", W / 2, 22, "#FEE761", FONT_L, "center");
-    text("QUEST", W / 2, 48, "#FEE761", FONT_L, "center");
-    text("- 안드로이드 개발자 10년의 모험 -", W / 2, 80, "#FFFFFF", FONT, "center");
-    text("← → 이동   Z/↑/스페이스 점프   X 공격", W / 2, 104, "#C0CBDC", FONT, "center");
-    text("몬스터는 베거나 밟아서 처치 · M 소리 · ESC 닫기", W / 2, 118, "#8B9BB4", FONT, "center");
-    if (Math.floor(state.t / 30) % 2 === 0) text("PRESS ENTER / TAP", W / 2, 140, "#3DDC84", FONT_B, "center");
-    ctx.drawImage(spr(Math.floor(state.t / 15) % 2 ? "HERO_A" : "HERO_B"), W / 2 - 8, H - 40);
+    text("SEUNGJUN", W / 2, 12, "#FEE761", FONT_L, "center");
+    text("QUEST", W / 2, 36, "#FEE761", FONT_L, "center");
+    text("안드로이드 개발자 10년의 모험", W / 2, 66, "#FFFFFF", FONT, "center");
+    text("← → 이동   Z/↑/스페이스 점프   X 공격", W / 2, 84, "#C0CBDC", FONT, "center");
+    text("몬스터는 베거나 밟아서 처치   ESC 닫기", W / 2, 97, "#8B9BB4", FONT, "center");
+    text(muted ? "소리 꺼짐   M 으로 켜기" : "소리 켜짐   M 으로 끄기", W / 2, 110, muted ? "#8B9BB4" : "#3DDC84", FONT, "center");
+    if (reduceMotion || Math.floor(state.t / 30) % 2 === 0) text("PRESS ENTER / TAP", W / 2, 126, "#3DDC84", FONT_B, "center");
+    if (progress.unlocked > 0) {
+      const id = LEVELS[state.pick].id;
+      text(`${state.pick > 0 ? "◀" : "  "} STAGE ${id} ${state.pick < progress.unlocked ? "▶" : "  "}`, W / 2, 141, "#FEE761", FONT_B, "center");
+      text(`BEST ${String(progress.best).padStart(6, "0")}`, W / 2, 154, "#8B9BB4", FONT, "center");
+    }
+    ctx.drawImage(spr(Math.floor(state.t / 15) % 2 ? "HERO_A" : "HERO_B"), 24, H - 40);
   };
 
   const drawClear = () => {
@@ -1033,9 +1089,10 @@
     if (lv.clearT < 10) return;
     const lines = lv.def.clear;
     text("STAGE CLEAR!", W / 2, 34, "#FEE761", FONT_L, "center");
-    text(`WORLD ${lv.def.id}`, W / 2, 64, "#8B9BB4", FONT, "center");
-    lines.forEach((l, i) => text(l, W / 2, 86 + i * 15, i === 0 ? "#3DDC84" : "#FFFFFF", i === 0 ? FONT_B : FONT, "center"));
-    if (lv.clearT > 40 && Math.floor(state.t / 30) % 2 === 0) text("NEXT ▶ ENTER / TAP", W / 2, H - 22, "#FEE761", FONT, "center");
+    text(`WORLD ${lv.def.id}`, W / 2, 62, "#8B9BB4", FONT, "center");
+    lines.forEach((l, i) => text(l, W / 2, 90 + i * 14, i === 0 ? "#3DDC84" : "#FFFFFF", i === 0 ? FONT_B : FONT, "center"));
+    text(`TIME ${L.formatFrames(lv.frames)}`, W / 2, 75, "#8B9BB4", FONT, "center");
+    if (lv.clearT > 40 && (reduceMotion || Math.floor(state.t / 30) % 2 === 0)) text("NEXT ▶ ENTER / TAP", W / 2, H - 16, "#FEE761", FONT, "center");
   };
 
   const drawEnding = () => {
@@ -1057,8 +1114,8 @@
       text(k, 26, 50 + i * 14, "#FEE761");
       text(v, 92, 50 + i * 14, c);
     });
-    text("github.com/ESeungJun", W / 2, 150, "#C0CBDC", FONT, "center");
-    if ((state.endT || 0) > 60 && Math.floor(state.t / 30) % 2 === 0) text("THANK YOU FOR PLAYING · ENTER", W / 2, 170, "#3DDC84", FONT, "center");
+    // 메일·GitHub·이력서는 캔버스 위 DOM 링크로 띄운다 (syncLinks)
+    if ((state.endT || 0) > 60 && (reduceMotion || Math.floor(state.t / 30) % 2 === 0)) text("THANK YOU FOR PLAYING   ENTER", W / 2, 176, "#3DDC84", FONT, "center");
   };
 
   const draw = () => {
@@ -1088,19 +1145,19 @@
     draw();
   };
 
-  // 화면에 맞는 정수 배율 (작은 화면은 비율 유지)
+  // 게임 1픽셀이 기기 픽셀 정수 개가 되도록 맞춘다. 뒤판은 320×192 그대로 두고
+  // CSS 크기를 (정수배 ÷ 기기 배율)로 잡으면 브라우저가 고르게 늘린다.
   const fit = () => {
     const touch = matchMedia("(pointer: coarse)").matches;
     const landscape = window.innerWidth > window.innerHeight;
-    // 터치 가로: 버튼이 좌우에 겹쳐 뜨므로 그만큼 비우고, 세로: 아래에 버튼 줄
-    const availH = window.innerHeight - (touch ? (landscape ? 44 : 150) : 60);
-    const availW = window.innerWidth - (touch && landscape ? 300 : 16);
-    let s = Math.min(availW / W, availH / H);
-    if (s >= 2) s = Math.floor(s);
+    // 터치 가로: 버튼이 좌우에 겹쳐 뜨므로 그만큼 비우고, 세로: 아래에 버튼 줄. 테두리 8px 은 뺀다.
+    const availH = window.innerHeight - (touch ? (landscape ? 60 : 220) : 76) - 8;
+    const availW = window.innerWidth - (touch && landscape ? 320 : 16) - 8;
+    const { cssW, cssH } = L.gameScale({ availW, availH, dpr: window.devicePixelRatio || 1, w: W, h: H });
     canvas.width = W;
     canvas.height = H;
-    canvas.style.width = `${Math.floor(W * s)}px`;
-    canvas.style.height = `${Math.floor(H * s)}px`;
+    canvas.style.width = `${cssW}px`;
+    canvas.style.height = `${cssH}px`;
     root.classList.toggle("is-touch", touch);
   };
 
@@ -1115,16 +1172,31 @@
   };
 
   const muteBtn = document.getElementById("game-mute");
-  const toggleMute = () => {
-    muted = !muted;
+  const muteLabel = document.getElementById("game-mute-label");
+  const applyMute = () => {
     bgm.muted = muted;
-    muteBtn.textContent = muted ? "♪ OFF" : "♪ ON";
+    muteLabel.textContent = muted ? "OFF" : "ON";
     muteBtn.setAttribute("aria-pressed", String(!muted));
+    if (!muted && actx) actx.resume?.();
     syncBgm();
   };
+  // 소리 상태는 페이지(main.js)가 갖고 있다. 바꾸면 양쪽 버튼이 같이 바뀐다.
+  const toggleMute = () => {
+    if (window.QuestSound) window.QuestSound.set(muted);
+    else {
+      muted = !muted;
+      applyMute();
+    }
+  };
+  if (window.QuestSound) {
+    window.QuestSound.onChange((on) => {
+      muted = !on;
+      applyMute();
+    });
+  }
 
   // 게임이 열려 있는 동안 뒤쪽 페이지는 포커스·클릭이 닿지 않게 한다
-  const page = [document.querySelector("main"), document.querySelector("header")];
+  const page = [document.querySelector("main"), document.querySelector("header"), document.getElementById("dock")].filter(Boolean);
   let lastFocus = null;
   const open = async () => {
     lastFocus = document.activeElement;
@@ -1134,6 +1206,9 @@
     state.paused = false;
     clearInput();
     fit();
+    muted = !(window.QuestSound && window.QuestSound.on);
+    applyMute();
+    state.pick = Math.min(state.pick, progress.unlocked);
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
     actx.resume?.();
     try {
@@ -1159,6 +1234,8 @@
     cancelAnimationFrame(raf);
     bgm.pause();
     clearInput();
+    linksKey = "";
+    linksEl.hidden = true;
     lastFocus && lastFocus.focus();
   };
 
@@ -1168,7 +1245,14 @@
     toggleMute();
     canvas.focus(); // 키 입력이 다시 게임으로 가게
   });
-  document.querySelectorAll("[data-open-game]").forEach((b) => b.addEventListener("click", open));
+  document.getElementById("game-pause").addEventListener("click", () => {
+    if (state.scene === "play") setPaused(!state.paused);
+    canvas.focus();
+  });
+  // 프로젝트·이력서 링크는 게임을 닫고 이동한다 (메일·새 탭 링크는 게임을 그대로 둔다)
+  [questLink, document.getElementById("game-resume")].forEach((a) => a.addEventListener("click", close));
+  // 여는 버튼은 main.js 가 이 파일을 받은 뒤에 부른다
+  window.QuestGame = { open, close };
   // 창을 떠나면 keyup 이 안 오므로 눌린 키를 모두 놓는다
   window.addEventListener("blur", clearInput);
   document.addEventListener("visibilitychange", () => {

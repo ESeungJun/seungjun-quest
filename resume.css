@@ -1,0 +1,219 @@
+/* 한 장 이력서. 색·글자 토큰은 styles.css 의 것을 그대로 쓴다. 인쇄하면 흰 종이로 바뀐다. */
+.resume-page {
+  cursor: auto;
+}
+.resume-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1) var(--s3);
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--s2) var(--s3);
+  font-size: var(--t-small);
+  color: var(--text-3);
+}
+.resume-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: 44px;
+  font: 700 var(--t-label) / 1 var(--font-px);
+  -webkit-font-smoothing: none;
+  letter-spacing: 1px;
+  color: var(--action);
+  text-decoration: none;
+}
+.resume-nav a:hover {
+  color: var(--text);
+}
+.resume {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--s3) var(--s3) var(--s5);
+}
+.resume-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--s3);
+  padding-bottom: var(--s3);
+  border-bottom: 4px solid var(--line);
+}
+.resume-head h1 {
+  margin: 0;
+  font-size: var(--t-title);
+  line-height: 1.25;
+}
+.resume-role {
+  margin: var(--s1) 0 0;
+  color: var(--text-2);
+}
+.resume-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--t-small);
+  line-height: 1.9;
+  text-align: right;
+}
+.resume a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 4px;
+}
+.resume a:hover {
+  color: var(--action);
+  text-decoration-color: var(--action);
+}
+.resume section {
+  margin-top: var(--s4);
+}
+.resume h2 {
+  margin: 0 0 var(--s2);
+  font-size: var(--t-head);
+  line-height: 1.5;
+  color: var(--done);
+}
+.resume p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--text-2);
+}
+.resume-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s3);
+  margin: 0;
+}
+.resume-stats div {
+  display: flex;
+  flex-direction: column;
+}
+.resume-stats dt {
+  order: 1;
+  font: 400 var(--t-label) / 2 var(--font-px);
+  -webkit-font-smoothing: none;
+  letter-spacing: 1px;
+}
+.resume-stats dd {
+  margin: 0;
+  font: 700 var(--t-title) / 1.25 var(--font-px);
+  -webkit-font-smoothing: none;
+  color: var(--done);
+}
+.resume-stats dd.note {
+  order: 2;
+  font: 400 var(--t-small) / 1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-3);
+}
+.resume-career,
+.resume-projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+}
+.resume-career li {
+  display: grid;
+  grid-template-columns: 152px minmax(0, 1fr);
+  gap: var(--s2);
+  color: var(--text-2);
+}
+.resume-career time {
+  font: 400 var(--t-label) / 2.4 var(--font-px);
+  -webkit-font-smoothing: none;
+  letter-spacing: 1px;
+  color: var(--text-3);
+}
+.resume-career strong {
+  display: block;
+  color: var(--text);
+}
+.resume-projects li {
+  break-inside: avoid;
+}
+.resume-projects h3 {
+  margin: 0;
+  font: 700 var(--t-body) / 1.5 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+.resume-projects .cat {
+  margin-left: var(--s1);
+  font: 400 var(--t-label) / 1 var(--font-px);
+  -webkit-font-smoothing: none;
+  letter-spacing: 1px;
+  color: var(--text-3);
+}
+.resume-projects p {
+  font-size: var(--t-small);
+  line-height: 1.7;
+}
+.resume-projects p.result {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .resume-head { align-items: flex-start; }
+  .resume-contact { text-align: left; }
+  .resume-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resume-stats dd { font-size: 36px; }
+  .resume-career li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+
+@media print {
+  :root {
+    --bg: #fff;
+    --surface: #fff;
+    --text: #111;
+    --text-2: #333;
+    --text-3: #555;
+    --line: #111;
+    --line-2: #bbb;
+    --done: #0a6b3b;
+    --action: #111;
+  }
+  html,
+  body {
+    background: #fff;
+  }
+  body {
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .resume-nav {
+    display: none;
+  }
+  .resume {
+    max-width: none;
+    padding: 0;
+  }
+  .resume section {
+    margin-top: 14pt;
+  }
+  .resume h2 {
+    font-size: 12pt;
+  }
+  .resume-head h1 {
+    font-size: 24pt;
+  }
+  .resume-stats dd {
+    font-size: 18pt;
+  }
+  .resume-stats dd.note,
+  .resume-projects p,
+  .resume-contact {
+    font-size: 9pt;
+  }
+  .resume-projects {
+    gap: 6pt;
+  }
+  .resume a {
+    text-decoration: none;
+  }
+}

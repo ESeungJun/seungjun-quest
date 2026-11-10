@@ -56,7 +56,7 @@ python3 -m http.server 4173
 | `game.js` | 직접 플레이 게임 (캔버스 320×192, 스테이지 5개, 키보드·터치). PLAY 를 처음 누를 때 받는다 |
 | `data/quests-detail.json` | 퀘스트 저널에 보이는 노션 프로젝트 상세 본문. 저널이 화면에 가까워질 때 받는다 |
 | `sprites.js` | 픽셀 스프라이트 정의 (캐릭터, 버튼 아이콘, 인벤토리 아이템) |
-| `tests/` | `node --test tests/` 로 도는 테스트 (순수 규칙, 파일 사이 사실 일치) |
+| `tests/` | `node --test tests/*.test.mjs` 로 도는 테스트 (순수 규칙, 파일 사이 사실 일치) |
 | `tools/subset-fonts.sh` | Galmuri11 서브셋 다시 만들기 |
 | `fonts-src/` | Galmuri11 원본 (배포에는 포함되지 않음) |
 | `worker.js` | 영상·음악 Range 응답(206). 배포 때 `_worker.js` 로 올라간다 |
@@ -82,7 +82,7 @@ python3 -m http.server 4173
 - 게임 스테이지(아이템·적·표지판 문구): `game.js` 의 `LEVELS` 배열
 - 한 장 이력서: `resume.html`
 
-같은 사실(성과 수치, 경력 기간, 연락처)이 `index.html`, `resume.html`, `game.js` 에 적혀 있다. 한 곳만 고치면 `node --test tests/` 가 어긋난 곳을 알려 준다.
+같은 사실(성과 수치, 경력 기간, 연락처)이 `index.html`, `resume.html`, `game.js` 에 적혀 있다. 한 곳만 고치면 `node --test tests/*.test.mjs` 가 어긋난 곳을 알려 준다.
 
 픽셀 글꼴로 찍히는 문구(제목·라벨·버튼·게임 글자)에 새 글자를 넣었으면 `tools/subset-fonts.sh` 를 다시 돌린다. 안 돌리면 그 글자만 시스템 글꼴로 보인다. 글자 크기는 `styles.css` 의 `--t-*` 토큰만 쓴다. Galmuri11 은 12px 격자 글꼴이라 12 의 배수가 아니면 획이 고르지 않다.
 
@@ -90,7 +90,7 @@ python3 -m http.server 4173
 
 ```bash
 for f in boot.js sprites.js lib.js main.js game.js worker.js; do node --check "$f"; done
-node --test tests/
+node --test tests/*.test.mjs
 ```
 
 Galmuri11 은 SIL Open Font License 1.1 글꼴이다 (© Lee Minseo).

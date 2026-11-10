@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: 22
       - run: for f in boot.js sprites.js lib.js main.js game.js worker.js legacy-redirect/index.js; do node --check "$f"; done
-      - run: node --test tests/
+      - run: node --test tests/*.test.mjs

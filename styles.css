@@ -170,6 +170,7 @@ video {
 html:not(.js) [data-open-game],
 html:not(.js) .hud-sound,
 html:not(.js) .tabs,
+html:not(.js) .qblock,
 html:not(.js) #copy-mail,
 html:not(.js) .continue-count {
   display: none;

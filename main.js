@@ -298,6 +298,7 @@
       let details = null; // null: 아직 안 받음, false: 실패, 객체: 받음
       let loading = null;
       let current = 0;
+      let shown = -1; // 지금 상세에 그려져 있는 항목
 
       // index.html 의 목록을 읽는다 (원본은 HTML 한 곳)
       const QUESTS = $$(":scope > li", list).map((li) => ({
@@ -395,8 +396,12 @@
         q.keys.forEach((k) => keys.appendChild(el("span", null, k)));
 
         // 긴 기록은 접어 둔다. 넓은 화면에서는 펼친 채로 시작한다.
+        // 같은 항목을 다시 그릴 때(본문이 늦게 도착한 경우)는 읽던 상태를 지킨다.
+        const again = shown === i;
+        const prevLog = again ? $(".qd-log", detail) : null;
+        const prevTop = again ? detail.scrollTop : 0;
         const log = el("details", "qd-log");
-        log.open = !isNarrow();
+        log.open = prevLog ? prevLog.open : !isNarrow();
         log.appendChild(el("summary", null, "퀘스트 기록"));
         const d = details && details[String(q.n)];
         let meta = null;
@@ -454,7 +459,8 @@
           log,
           nav,
         );
-        detail.scrollTop = 0;
+        detail.scrollTop = prevTop;
+        shown = i;
 
         if (hash) history.replaceState(null, "", L.questHash(q.n));
         if (focus) detail.focus({ preventScroll: true });
@@ -525,8 +531,13 @@
         if (n != null) openQuestByN(n, { hash: false });
       };
       window.addEventListener("hashchange", fromHash);
-      // 글꼴·그림이 붙으면 위치가 밀리므로 다 받은 뒤 한 번 더 맞춘다
-      window.addEventListener("load", fromHash);
+      // 프로젝트 주소로 들어온 경우: 글꼴·그림이 붙으면 위치가 밀리므로 다 받은 뒤 한 번 더 맞춘다
+      const entry = location.hash;
+      if (L.parseQuestHash(entry) != null) {
+        window.addEventListener("load", () => {
+          if (location.hash === entry && window.scrollY < $("#quests").offsetTop + 400) fromHash();
+        });
+      }
 
       detail.hidden = false;
       updateCount();

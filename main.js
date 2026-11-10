@@ -203,7 +203,8 @@
   paintSprites();
   // 게이지 값은 CSP(style-src 'self') 때문에 style 속성 대신 여기서 넣는다
   $$(".bar i[data-v]").forEach((i) => i.style.setProperty("--v", i.dataset.v));
-  setTimeout(() => $("#boot").classList.add("is-done"), reduceMotion ? 0 : 1000);
+  // 부팅 화면은 CSS 애니메이션이 걷는다 (styles.css .boot). 여기서는 등장 연출만 켠다.
+  document.documentElement.classList.add("js");
 
   // ───────── 별 · 패럴랙스 ─────────
   // 별 70개를 요소 두 개의 box-shadow 로 그린다 (요소별 애니메이션 비용 제거)

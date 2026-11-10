@@ -95,11 +95,12 @@ video {
   display: grid;
   place-items: center;
   background: #000;
-  transition: opacity 0.3s steps(3);
-}
-.boot.is-done {
-  opacity: 0;
   pointer-events: none;
+  /* 스크립트 없이 CSS 만으로 걷힌다. 스크립트가 꺼지거나 실패해도 본문이 보인다. */
+  animation: boot-out 0.3s steps(3) 1s forwards;
+}
+@keyframes boot-out {
+  to { opacity: 0; visibility: hidden; }
 }
 .boot-title {
   font-size: 28px;
@@ -367,12 +368,12 @@ video {
 }
 
 /* 화면에 들어올 때 계단식 등장 */
-.reveal {
+.js .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.4s steps(4), transform 0.4s steps(4);
 }
-.reveal.is-in {
+.js .reveal.is-in {
   opacity: 1;
   transform: none;
 }
@@ -1019,6 +1020,7 @@ body.is-gaming .crt { display: none; }
     transition: none !important;
   }
   html { scroll-behavior: auto; }
+  .boot { display: none; }
   .reveal { opacity: 1; transform: none; }
   .bar i { width: var(--v); }
 }
